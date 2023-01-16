@@ -1,4 +1,4 @@
-package com.ukj.exam.servlet;
+package com.ukj.exam.exampleGugudan;
 
 import com.ukj.exam.Rq;
 import jakarta.servlet.RequestDispatcher;
