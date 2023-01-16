@@ -9,14 +9,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 
-@WebServlet("/article/list")
-public class ArticleListServlet extends HttpServlet {
+@WebServlet("/article/delete")
+public class ArticleDeleteServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -35,23 +35,25 @@ public class ArticleListServlet extends HttpServlet {
     String user = "guest";
     String password = "bemyguest";
 
+    req.setCharacterEncoding("UTF-8");
+    resp.setCharacterEncoding("UTF-8");
+    resp.setContentType("text/html; charset-utf-8");
+
 
     try {
       conn = DriverManager.getConnection(url, user, password);
 
 //------------------------------------------------------
 
-      SecSql sql = SecSql.from("SELECT *");
-      sql.append("FROM article");
-      sql.append("ORDER BY id DESC");
-      sql.append("LIMIT 0, 30");
+      int id =  Integer.parseInt(req.getParameter("id"));
 
-      List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
+      SecSql sql = SecSql.from("DELETE");
+      sql.append("FROM article WHERE id = ?", id);
 
-      req.setAttribute("articleRows", articleRows);
-      req.getRequestDispatcher("../article/list.jsp").forward(req, resp);
+      DBUtil.delete(conn, sql);
 
-      resp.getWriter().append(articleRows.toString());
+      resp.getWriter().append(String.format("<script> alert('%d번 게시글이 삭제되었습니다.');" +
+          "location.replace('list')</script>", id));
 
 //------------------------------------------------------
 

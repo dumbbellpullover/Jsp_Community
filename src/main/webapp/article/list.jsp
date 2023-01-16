@@ -12,19 +12,32 @@
 </head>
 <body>
   <h1>게시물 리스트</h1>
-  <ul>
-    <%
-      for (Map<String, Object> articleRow : articleRows) {
-    %>
-    <li>
-      <a href="detail?id=<%= articleRow.get("id")%>">
-      <%= (int) articleRow.get("id")%>번,
-      <%= articleRow.get("regDate")%>,
-      <%= articleRow.get("updateDate")%>,
-      <%= articleRow.get("title")%>
-      </a>
-    </li>
+  <table border="1">
+    <colgroup>
+      <col width="50"/>
+      <col width="200"/>
+      <col width="200"/>
+    </colgroup>
+    <thead>
+      <tr>
+        <td><b>번호</b></td>
+        <td><b>작성 날짜</b></td>
+        <td><b>수정 날짜</b></td>
+        <td><b>제목</b></td>
+        <td><b>비고</b></td>
+      </tr>
+    </thead>
+    <tbody>
+    <% for (Map<String, Object> articleRow : articleRows) { %>
+    <tr>
+      <td><%= (int) articleRow.get("id")%></td>
+      <td><%= articleRow.get("regDate")%></td>
+      <td><%= articleRow.get("updateDate")%></td>
+      <td> <a href="detail?id=<%= articleRow.get("id")%>"><%= articleRow.get("title")%></a></td>
+      <td><a href="delete?id=<%= articleRow.get("id")%>">삭제</a></td>
+    </tr>
     <% } %>
-  </ul>
+    </tbody>
+  </table>
 </body>
 </html>
