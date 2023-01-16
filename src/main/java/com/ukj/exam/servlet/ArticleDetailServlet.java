@@ -15,8 +15,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/article/list")
-public class ArticleListServlet extends HttpServlet {
+@WebServlet("/article/detail")
+public class ArticleDetailServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -42,15 +42,17 @@ public class ArticleListServlet extends HttpServlet {
 
 //------------------------------------------------------
 
+      int id =  Integer.parseInt(req.getParameter("id"));
+
       SecSql sql = new SecSql();
-      sql.append("SELECT * FROM article");
+      sql.append("SELECT * FROM article WHERE id = ?", id);
 
-      List<Map<String, Object>> articleRows = dbUtil.selectRows(conn, sql);
+      Map<String, Object> articleRow = dbUtil.selectRow(conn, sql);
 
-      req.setAttribute("articleRows", articleRows);
-      req.getRequestDispatcher("../article/list.jsp").forward(req, resp);
+      req.setAttribute("articleRow", articleRow);
+      req.getRequestDispatcher("../article/detail.jsp").forward(req, resp);
 
-      resp.getWriter().append(articleRows.toString());
+      resp.getWriter().append(articleRow.toString());
 
 //------------------------------------------------------
 
