@@ -1,10 +1,6 @@
 package com.ukj.exam.util;
 
 import com.ukj.exam.exception.SQLErrorException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.UnsupportedEncodingException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public class DBUtil {
-
   public static Map<String, Object> selectRow(Connection dbConn, SecSql sql) {
     List<Map<String, Object>> rows = selectRows(dbConn, sql);
 
@@ -57,13 +52,13 @@ public class DBUtil {
         rows.add(row);
       }
     } catch (SQLException e) {
-      e.printStackTrace();
+      throw new SQLErrorException("SQL 예외, SQL : " + sql, e);
     } finally {
       if (rs != null) {
         try {
           rs.close();
         } catch (SQLException e) {
-          e.printStackTrace();
+          throw new SQLErrorException("SQL 예외, rs 닫기, SQL : " + sql, e);
         }
       }
 
@@ -71,7 +66,7 @@ public class DBUtil {
         try {
           stmt.close();
         } catch (SQLException e) {
-          e.printStackTrace();
+          throw new SQLErrorException("SQL 예외, stmt 닫기, SQL : " + sql, e);
         }
       }
     }
@@ -125,13 +120,13 @@ public class DBUtil {
       }
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      throw new SQLErrorException("SQL 예외, SQL : " + sql, e);
     } finally {
       if (rs != null) {
         try {
           rs.close();
         } catch (SQLException e) {
-          e.printStackTrace();
+          throw new SQLErrorException("SQL 예외, rs 닫기, SQL : " + sql, e);
         }
       }
 
@@ -139,7 +134,7 @@ public class DBUtil {
         try {
           stmt.close();
         } catch (SQLException e) {
-          e.printStackTrace();
+          throw new SQLErrorException("SQL 예외, stmt 닫기, SQL : " + sql, e);
         }
       }
 
@@ -157,13 +152,13 @@ public class DBUtil {
       stmt = sql.getPreparedStatement(dbConn);
       affectedRows = stmt.executeUpdate();
     } catch (SQLException e) {
-      e.printStackTrace();
+      throw new SQLErrorException("SQL 예외, SQL : " + sql, e);
     } finally {
       if (stmt != null) {
         try {
           stmt.close();
         } catch (SQLException e) {
-          e.printStackTrace();
+          throw new SQLErrorException("SQL 예외, stmt 닫기, SQL : " + sql, e);
         }
       }
     }
