@@ -11,7 +11,9 @@
   <version>1.0-SNAPSHOT</version>
   <name>JSP_Community Maven Webapp</name>
   <url>http://maven.apache.org</url>
+
   <dependencies>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -26,6 +28,15 @@
       <version>6.0.0</version>
       <scope>provided</scope>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.22</version>
+    </dependency>
+
+
   </dependencies>
   <build>
     <finalName>JSP_Community</finalName>
