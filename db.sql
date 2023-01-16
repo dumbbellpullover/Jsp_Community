@@ -1,3 +1,4 @@
+drop database if exists JSP_Community;
 create database JSP_Community;
 use JSP_Community;
 
@@ -17,6 +18,7 @@ values (now(), now(), 'title1', 'body1');
 insert into article (regDate, updateDate, title, body)
 values (now(), now(), 'title2', 'body2');
 insert into article (regDate, updateDate, title, body)
-values (now(), now(), 'title3', 'body3');
+values (now(), now(), concat('title__', rand()), concat('body__', rand()));
 
 select * from article;
+select count(*) from article;

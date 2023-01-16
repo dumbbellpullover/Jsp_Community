@@ -41,14 +41,29 @@ public class ArticleListServlet extends HttpServlet {
 
 //------------------------------------------------------
 
-      SecSql sql = SecSql.from("SELECT *");
+      int page = 1;
+      if (req.getParameter("page") != null && req.getParameter("page").length() != 0) {
+          page = Integer.parseInt(req.getParameter("page"));
+      }
+
+      int itemInAPage = 20;
+      int limitFrom = (page - 1) * itemInAPage;
+
+      SecSql sql = SecSql.from("SELECT COUNT(*)");
+      sql.append("FROM article");
+
+      int totalPage = DBUtil.selectRowIntValue(conn, sql) / itemInAPage + 1;
+
+      sql = SecSql.from("SELECT *");
       sql.append("FROM article");
       sql.append("ORDER BY id DESC");
-      sql.append("LIMIT 0, 30");
+      sql.append("LIMIT ?, ?", limitFrom, itemInAPage);
 
       List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
 
       req.setAttribute("articleRows", articleRows);
+      req.setAttribute("page", page);
+      req.setAttribute("totalPage", totalPage);
       req.getRequestDispatcher("../article/list.jsp").forward(req, resp);
 
       resp.getWriter().append(articleRows.toString());
