@@ -12,11 +12,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 
-@WebServlet("/article/detail")
-public class ArticleDetailServlet extends HttpServlet {
+@WebServlet("/article/doWrite")
+public class ArticleDoWriteServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -35,23 +33,29 @@ public class ArticleDetailServlet extends HttpServlet {
     String user = "guest";
     String password = "bemyguest";
 
+    req.setCharacterEncoding("UTF-8");
+    resp.setCharacterEncoding("UTF-8");
+    resp.setContentType("text/html; charset-utf-8");
 
     try {
       conn = DriverManager.getConnection(url, user, password);
 
 //------------------------------------------------------
 
-      int id =  Integer.parseInt(req.getParameter("id"));
+      String title = req.getParameter("title");
+      String body = req.getParameter("body");
 
-      SecSql sql = SecSql.from("SELECT *");
-      sql.append("FROM article WHERE id = ?", id);
+      SecSql sql = SecSql.from("INSERT INTO article");
+      sql.append("(regDate, updateDate, title, body)");
+      sql.append("VALUES");
+      sql.append("(NOW(), NOW(), ?, ?)", title, body);
 
-      Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
+      //CONCAT('title__', RAND())
 
-      req.setAttribute("articleRow", articleRow);
-      req.getRequestDispatcher("../article/detail.jsp").forward(req, resp);
+      int id = DBUtil.insert(conn, sql);
 
-      resp.getWriter().append(articleRow.toString());
+      resp.getWriter().append(String.format("<script> alert('%d번 게시글이 등록되었습니다.');" +
+          "location.replace('list')</script>", id));
 
 //------------------------------------------------------
 

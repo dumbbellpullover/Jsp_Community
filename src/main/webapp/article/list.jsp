@@ -14,6 +14,9 @@
 </head>
 <body>
   <h1>게시물 리스트</h1>
+  <div>
+    <a href="../article/write">게시물 작성</a>
+  </div>
   <table border="1">
     <colgroup>
       <col width="50"/>
