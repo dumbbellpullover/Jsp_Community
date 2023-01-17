@@ -22,19 +22,28 @@ create table member (
 );
 
 desc article;
-select * from article;
 desc member;
-select * from member;
 
-insert into article (regDate, updateDate, title, body)
-values (now(), now(), 'title1', 'body1');
-insert into article (regDate, updateDate, title, body)
-values (now(), now(), 'title2', 'body2');
-insert into article (regDate, updateDate, title, body)
-values (now(), now(), concat('title__', rand()), concat('body__', rand()));
-INSERT INTO article (regDate, updateDate, title, body)
+insert into article (regDate, updateDate, memberId, title, body)
+values (now(), now(), 'title1', 1, 'body1');
+INSERT INTO article (regDate, updateDate, memberId, title, body)
 SELECT NOW(), NOW(), CONCAT('title__', RAND()), CONCAT('body__', RAND())
 FROM article;
+
+# 회원 테이블 데이터 생성
+insert into member (regDate, updateDate, loginId, loginPw, name)
+values (now(), now(), 'admin', 'admin', '관리자');
+insert into member (regDate, updateDate, loginId, loginPw, name)
+values (now(), now(), 'user1', 'user1', '유저1');
+insert into member (regDate, updateDate, loginId, loginPw, name)
+values (now(), now(), 'user2', 'user2', '유저2');
+INSERT INTO member (regDate, updateDate, loginId, loginPw, name)
+SELECT NOW(), NOW(), CONCAT('title__', RAND()), CONCAT('body__', RAND())
+FROM article;
+select * from member;
+
+# 게시물 테이블에 memberId 컬럼 추가
+ALTER TABLE article ADD COLUMN memberId INT UNSIGNED NOT NULL AFTER updateDate;
 
 SELECT * FROM article ORDER BY id DESC LIMIT 1;
 
