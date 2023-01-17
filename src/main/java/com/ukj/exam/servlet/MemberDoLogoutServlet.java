@@ -1,5 +1,9 @@
 package com.ukj.exam.servlet;
 
+import com.ukj.exam.Config;
+import com.ukj.exam.exception.SQLErrorException;
+import com.ukj.exam.util.DBUtil;
+import com.ukj.exam.util.SecSql;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -8,9 +12,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Map;
 
-@WebServlet("/home/main")
-public class HomeMainServlet extends HttpServlet{
+@WebServlet("/member/doLogout")
+public class MemberDoLogoutServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -19,23 +27,17 @@ public class HomeMainServlet extends HttpServlet{
     resp.setContentType("text/html; charset-utf-8");
 
     HttpSession session = req.getSession();
-    boolean isLogged = false;
-    int loggedMemberId = -1;
+    session.removeAttribute("loggedMemberId");
 
-    if( session.getAttribute("loggedMemberId") != null ) {
-      loggedMemberId = (int) session.getAttribute("loggedMemberId");
-      isLogged = true;
-    }
-
-    req.setAttribute("isLogged", isLogged);
-    req.setAttribute("loggedMemberId", loggedMemberId);
-
-    req.getRequestDispatcher("../home/main.jsp").forward(req, resp);
-    //main.jsp에게 age=22 정보를 넘겨줘, main.jsp에서 쓸 수 있음
+    resp.getWriter().append(String.format(
+        "<script> alert('로그아웃 되었습니다.'); " +
+            "location.replace('../home/main'); </script>"
+    ));
   }
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     doGet(req, resp);
   }
+
 }
