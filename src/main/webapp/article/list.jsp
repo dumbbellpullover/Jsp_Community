@@ -40,8 +40,10 @@
       <td><%= articleRow.get("regDate")%></td>
       <td><%= articleRow.get("updateDate")%></td>
       <td> <a href="detail?id=<%= articleRow.get("id")%>"><%= articleRow.get("title")%></a></td>
-      <td><a href="doDelete?id=<%= articleRow.get("id")%>">삭제</a></td>
-      <td><a href="modify?id=<%= articleRow.get("id")%>">수정</a></td>
+      <td>
+        <a href="doDelete?id=<%= articleRow.get("id")%>">삭제</a>
+        <a href="modify?id=<%= articleRow.get("id")%>">수정</a>
+      </td>
     </tr>
     <% } %>
     </tbody>
@@ -52,8 +54,23 @@
     }
   </style>
   <div class="page">
-    <% for (int i = 1; i <= totalPage; i++) { %>
+    <%
+      if (cPage > 1) { %>
+        <a href="list?page=1">◄</a>
+    <% }
+
+      int pageMenuSize = 5;
+      int from = cPage - pageMenuSize;
+      int end = cPage + pageMenuSize;
+
+      if ( from < 1 ) { from = 1; }
+      if ( end > totalPage ) { end = totalPage; }
+      for (int i = from; i <= end; i++) {
+    %>
       <a class="<%=cPage == i ? "red" : ""%>" href="list?page=<%= i%>"><%= i%></a>
+    <% }
+      if (cPage < totalPage) { %>
+        <a href="../article/list?page=<%=totalPage%>">►</a>
     <% } %>
   </div>
 </body>
