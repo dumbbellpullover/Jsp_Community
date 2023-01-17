@@ -1,5 +1,6 @@
 package com.ukj.exam.servlet;
 
+import com.ukj.exam.Config;
 import com.ukj.exam.util.DBUtil;
 import com.ukj.exam.util.SecSql;
 import jakarta.servlet.ServletException;
@@ -19,9 +20,10 @@ public class ArticleDoWriteServlet extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
     Connection conn = null;
+    String driverName = Config.getDriverClassName();
 
     try {
-      Class.forName("com.mysql.cj.jdbc.Driver");
+      Class.forName(driverName);
     } catch (ClassNotFoundException e) {
       System.out.printf("[ClassNotFoundException 예외, %s]", e.getMessage());
       resp.getWriter().append("DB 드라이버 클래스 로딩 실패");
@@ -29,16 +31,12 @@ public class ArticleDoWriteServlet extends HttpServlet {
 
     }
 
-    String url = "jdbc:mysql://127.0.0.1:3306/jsp_community?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
-    String user = "guest";
-    String password = "bemyguest";
-
     req.setCharacterEncoding("UTF-8");
     resp.setCharacterEncoding("UTF-8");
     resp.setContentType("text/html; charset-utf-8");
 
     try {
-      conn = DriverManager.getConnection(url, user, password);
+      conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBId(), Config.getDBPw());
 
 //------------------------------------------------------
 
