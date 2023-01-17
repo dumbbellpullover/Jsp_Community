@@ -1,6 +1,7 @@
 package com.ukj.exam.servlet;
 
 import com.ukj.exam.Config;
+import com.ukj.exam.exception.SQLErrorException;
 import com.ukj.exam.util.DBUtil;
 import com.ukj.exam.util.SecSql;
 import jakarta.servlet.ServletException;
@@ -61,6 +62,9 @@ public class ArticleDoModifyServlet extends HttpServlet {
       System.out.printf("[ClassNotFoundException 예외, %s]", e.getMessage());
       resp.getWriter().append("DB 드라이버 클래스 로딩 실패");
       return;
+
+    } catch (SQLErrorException e) {
+      e.getOrigin().printStackTrace();
 
     } finally {
       try {
