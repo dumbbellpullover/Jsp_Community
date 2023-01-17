@@ -9,14 +9,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Map;
 
-@WebServlet("/article/delete")
-public class ArticleDeleteServlet extends HttpServlet {
+@WebServlet("/article/doModify")
+public class ArticleDoModifyServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -39,21 +37,25 @@ public class ArticleDeleteServlet extends HttpServlet {
     resp.setCharacterEncoding("UTF-8");
     resp.setContentType("text/html; charset-utf-8");
 
-
     try {
       conn = DriverManager.getConnection(url, user, password);
 
 //------------------------------------------------------
 
-      int id =  Integer.parseInt(req.getParameter("id"));
+      int id = Integer.parseInt(req.getParameter("id"));
+      String title = req.getParameter("title");
+      String body = req.getParameter("body");
 
-      SecSql sql = SecSql.from("DELETE");
-      sql.append("FROM article WHERE id = ?", id);
+      SecSql sql = SecSql.from("UPDATE article SET");
+      sql.append("title = ?, body = ?", title, body);
+      sql.append("WHERE id = ?", id);
 
-      DBUtil.delete(conn, sql);
+      //CONCAT('title__', RAND())
 
-      resp.getWriter().append(String.format("<script> alert('%d번 게시글이 삭제되었습니다.');" +
-          "location.replace('list')</script>", id));
+      DBUtil.update(conn, sql);
+
+      resp.getWriter().append(String.format("<script> alert('%d번 게시글이 수정되었습니다.');" +
+          "location.replace('detail?id=%d')</script>", id, id));
 
 //------------------------------------------------------
 

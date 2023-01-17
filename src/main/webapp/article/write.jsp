@@ -3,6 +3,7 @@
 <!doctype html>
 <html lang="ko">
 <head>
+  <meta charset="UTF-8">
   <title>게시물 작성</title>
 </head>
 <body>
@@ -13,7 +14,7 @@
     <div>내용: <textarea autocomplete="off" placeholder="내용을 입력해주세요." name="body"></textarea></div>
     <div>
       <button type="submit">작성</button>
-      <a href="/article/list">리스트로 돌아가기</a>
+      <a href="/article/list">리스트</a>
     </div>
   </form>
 </body>

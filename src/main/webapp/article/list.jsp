@@ -10,6 +10,7 @@
 <!doctype html>
 <html lang="ko">
 <head>
+  <meta charset="UTF-8">
   <title>게시물 리스트</title>
 </head>
 <body>
@@ -39,7 +40,8 @@
       <td><%= articleRow.get("regDate")%></td>
       <td><%= articleRow.get("updateDate")%></td>
       <td> <a href="detail?id=<%= articleRow.get("id")%>"><%= articleRow.get("title")%></a></td>
-      <td><a href="delete?id=<%= articleRow.get("id")%>">삭제</a></td>
+      <td><a href="doDelete?id=<%= articleRow.get("id")%>">삭제</a></td>
+      <td><a href="modify?id=<%= articleRow.get("id")%>">수정</a></td>
     </tr>
     <% } %>
     </tbody>
