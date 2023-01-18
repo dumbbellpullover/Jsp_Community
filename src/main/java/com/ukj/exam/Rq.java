@@ -1,22 +1,27 @@
 package com.ukj.exam;
 
-import com.ukj.exam.dto.Article;
 import com.ukj.exam.util.Util;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
+@ToString
 public class Rq {
   private final HttpServletRequest req;
   private final HttpServletResponse resp;
+  @Getter
   private boolean isInvalid;
+  @Getter
   private String controllerTypeName;
+  @Getter
   private String controllerName;
+  @Getter
   private String actionMethodName;
 
   public Rq(HttpServletRequest req, HttpServletResponse resp) {
@@ -50,26 +55,6 @@ public class Rq {
     this.controllerTypeName = requestUriBits[1];
     this.controllerName = requestUriBits[2];
     this.actionMethodName = requestUriBits[3];
-  }
-
-  public HttpServletRequest getReq() {
-    return req;
-  }
-
-  public String getControllerTypeName() {
-    return controllerTypeName;
-  }
-
-  public String getControllerName() {
-    return controllerName;
-  }
-
-  public String getActionMethodName() {
-    return actionMethodName;
-  }
-
-  public boolean getIsInvalid() {
-    return isInvalid;
   }
 
   public String getParam(String paramName, String defaultValue) {

@@ -27,7 +27,7 @@ public class DispatcherServlet extends HttpServlet {
 
     Rq rq = new Rq(req, resp);
 
-    if(rq.getIsInvalid()) {
+    if(rq.isInvalid()) {
       rq.print("올바른 요청이 아닙니다.");
     }
 

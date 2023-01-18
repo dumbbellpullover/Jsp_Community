@@ -1,7 +1,10 @@
 package com.ukj.exam.dto;
 
+import lombok.Data;
+
 import java.util.Map;
 
+@Data
 public class Article {
   public int id;
   public String regDate;
@@ -10,9 +13,6 @@ public class Article {
   public String title;
   public String body;
 
-  public Article() {
-
-  }
 
   public Article(Map<String, Object> row) {
     this.id = (int) row.get("id");
