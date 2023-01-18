@@ -15,7 +15,7 @@ public class ArticleService {
   }
 
   public int getItemsInAPage() {
-    return 20;
+    return 5;
   }
 
   public int getForPrintListTotalPage() {

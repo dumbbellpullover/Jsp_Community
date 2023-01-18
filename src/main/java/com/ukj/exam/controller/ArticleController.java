@@ -43,6 +43,9 @@ public class ArticleController extends Controller{
       case "doWrite":
         actionDoWrite(rq);
         break;
+
+      default:
+        rq.println("존재하지 않는 페이지입니다.");
     }
 
   }
@@ -102,6 +105,8 @@ public class ArticleController extends Controller{
       String title = req.getParameter("title");
       String body = req.getParameter("body");
 
+      String redirectUri = rq.getParam("redirectUri", "../article/list");
+
       if (title.length() == 0) {
         rq.historyBack("제목을 입력해주세요.");
       }
@@ -113,11 +118,11 @@ public class ArticleController extends Controller{
       int loggedMemberId = (int) session.getAttribute("loggedMemberId");
 
       ResultData writeRd = articleService.write(title, body, loggedMemberId);
+      int id = (int) writeRd.getBody().get("id");
 
-      rq.printf(writeRd.getMsg());
+      redirectUri = redirectUri.replace("[NEW_ID]", id+"");
 
-//      rq.print(String.format("<script> alert('%d번 게시글이 등록되었습니다.');" +
-//          "location.replace('list')</script>", id));
+      rq.replace(writeRd.getMsg(), redirectUri);
 
 //------------------------------------------------------
 

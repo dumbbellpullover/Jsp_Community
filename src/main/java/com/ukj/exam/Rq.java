@@ -70,6 +70,22 @@ public class Rq {
     return isInvalid;
   }
 
+  public String getParam(String paramName, String defaultValue) {
+    String value = req.getParameter(paramName);
+
+    if (value == null) {
+      return defaultValue;
+    }
+
+    try {
+      return value;
+
+    } catch (NullPointerException e) {
+      return defaultValue;
+    }
+
+  }
+
   public int getIntParam(String paramName, int defaultValue) {
     String value = req.getParameter(paramName);
 
@@ -117,8 +133,15 @@ public class Rq {
 
   public void historyBack(String msg) {
     println("<script>");
-    printf("alert(%);\n", msg);
+    printf("alert('%s');\n", msg);
     println("history.back();");
+    println("</script>");
+  }
+
+  public void replace(String msg, String redirectUri) {
+    println("<script>");
+    printf("alert('%s');\n", msg);
+    printf("location.replace('%s');\n", redirectUri);
     println("</script>");
   }
 }

@@ -9,6 +9,7 @@
 <body>
   <h1>게시물 작성</h1>
   <form action="doWrite" method="POST">
+    <input type="hidden" name="redirectUri" value="../article/detail?id=[NEW_ID]">
     <!-- autocomplete = 자동 완성, placeholder="옅은 글씨"-->
     <div>제목: <input autocomplete="off" placeholder="제목을 입력해주세요." name="title" type="text"></div>
     <div>내용: <textarea autocomplete="off" placeholder="내용을 입력해주세요." name="body"></textarea></div>
