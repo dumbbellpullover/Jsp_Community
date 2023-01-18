@@ -52,4 +52,9 @@ public class ArticleService {
     return ResultData.from("S-1", Util.f("%d번 게시물이 삭제되었습니다.", id), "id", id);
 
   }
+
+  public ResultData modify(int id, String title, String body) {
+    articleDao.modify(id, title, body);
+    return ResultData.from("S-1", Util.f("%d번 게시물이 수정되었습니다.", id), "id", id);
+  }
 }

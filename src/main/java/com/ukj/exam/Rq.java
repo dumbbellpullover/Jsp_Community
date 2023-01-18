@@ -77,10 +77,12 @@ public class Rq {
     String value = req.getParameter(paramName);
 
     if (value == null) {
+      System.out.println(1);
       return defaultValue;
     }
 
     try {
+      System.out.println(2);
       return Integer.parseInt(value);
 
     } catch (NumberFormatException e) {

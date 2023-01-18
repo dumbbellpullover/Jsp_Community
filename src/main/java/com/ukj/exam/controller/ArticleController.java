@@ -1,23 +1,16 @@
 package com.ukj.exam.controller;
 
-import com.ukj.exam.Config;
 import com.ukj.exam.Rq;
 import com.ukj.exam.dto.Article;
 import com.ukj.exam.dto.ResultData;
-import com.ukj.exam.exception.SQLErrorException;
 import com.ukj.exam.service.ArticleService;
-import com.ukj.exam.util.DBUtil;
-import com.ukj.exam.util.SecSql;
 import com.ukj.exam.util.Util;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public class ArticleController extends Controller {
   private HttpServletRequest req;
@@ -50,6 +43,14 @@ public class ArticleController extends Controller {
         actionDoWrite(rq);
         break;
 
+      case "modify":
+        actionShowModify(rq);
+        break;
+
+      case "doModify":
+        actionDoModify(rq);
+        break;
+
       case "doDelete":
         actionDoDelete(rq);
         break;
@@ -58,6 +59,53 @@ public class ArticleController extends Controller {
         rq.println("존재하지 않는 페이지입니다.");
     }
 
+  }
+
+  private void actionShowModify(Rq rq) {
+
+    int id = rq.getIntParam("id", 0);
+
+    if(id == 0) {
+      rq.historyBack("id를 입력해주세요");
+      return;
+    }
+
+    Article article = articleService.getForPrintArticleById(id);
+
+    if (article == null) {
+      rq.historyBack(Util.f("%d번 게시물이 존재하지 않습니다.", id));
+      return;
+    }
+
+    rq.setAttr("article", article);
+    rq.jsp("/article/modify");
+
+  }
+
+  private void actionDoModify(Rq rq) {
+    int id = rq.getIntParam("id", 0);
+    String title = rq.getParam("title", "");
+    String body = rq.getParam("body", "");
+    String redirectUri = rq.getParam("redirectUri", Util.f("../article/detail?id=%d", id));
+
+    if (id == 0) {
+      rq.historyBack("id를 입력해주세요.");
+      return;
+    }
+
+    if (title.length() == 0) {
+      rq.historyBack("title을 입력해주세요.");
+      return;
+    }
+
+    if (body.length()== 0) {
+      rq.historyBack("body를 입력해주세요.");
+      return;
+    }
+
+    ResultData modifyRd = articleService.modify(id, title, body);
+
+    rq.replace(modifyRd.getMsg(), redirectUri);
   }
 
   private void actionDoDelete(Rq rq) {

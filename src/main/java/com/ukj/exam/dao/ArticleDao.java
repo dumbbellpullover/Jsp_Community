@@ -65,4 +65,14 @@ public class ArticleDao {
 
     DBUtil.delete(conn, sql);
   }
+
+  public void modify(int id, String title, String body) {
+
+    SecSql sql = SecSql.from("UPDATE article SET");
+    sql.append("updateDate = NOW(), title = ?, body = ?", title, body);
+    sql.append("WHERE id = ?", id);
+    //CONCAT('title__', RAND())
+
+    DBUtil.update(conn, sql);
+  }
 }

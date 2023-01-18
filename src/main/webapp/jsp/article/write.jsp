@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!doctype html>
-<html lang="ko">
-
 <c:set var="pageTitle" value="게시물 작성"></c:set>
 <%@ include file="../part/head.jspf"%>
 
