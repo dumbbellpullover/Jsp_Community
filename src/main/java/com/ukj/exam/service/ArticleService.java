@@ -46,4 +46,10 @@ public class ArticleService {
   public Article getForPrintArticleById(int id) {
     return articleDao.getForPrintArticleById(id);
   }
+
+  public ResultData delete(int id) {
+    articleDao.delete(id);
+    return ResultData.from("S-1", Util.f("%d번 게시물이 삭제되었습니다.", id), "id", id);
+
+  }
 }
