@@ -1,10 +1,10 @@
 package com.ukj.exam.service;
 
 import com.ukj.exam.dao.ArticleDao;
+import com.ukj.exam.dto.Article;
 
 import java.sql.Connection;
 import java.util.List;
-import java.util.Map;
 
 public class ArticleService {
   private ArticleDao articleDao;
@@ -24,11 +24,11 @@ public class ArticleService {
     return totalPage;
   }
 
-  public List<Map<String, Object>> getForPrintArticleRows(int page) {
+  public List<Article> getForPrintArticles(int page) {
     int itemInAPage = getItemsInAPage();
     int limitFrom = (page - 1) * itemInAPage;
 
-    List<Map<String, Object>> articleRows = articleDao.getArticleRows(itemInAPage, limitFrom);
-    return articleRows;
+    List<Article> articles = articleDao.getArticles(itemInAPage, limitFrom);
+    return articles;
   }
 }
