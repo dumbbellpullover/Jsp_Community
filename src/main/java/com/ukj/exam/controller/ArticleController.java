@@ -1,16 +1,15 @@
 package com.ukj.exam.controller;
 
+import com.ukj.exam.Rq;
 import com.ukj.exam.dto.Article;
 import com.ukj.exam.service.ArticleService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 
-public class ArticleController {
+public class ArticleController extends Controller{
   private HttpServletRequest req;
   private HttpServletResponse resp;
   private ArticleService articleService;
@@ -22,7 +21,17 @@ public class ArticleController {
     this.articleService = new ArticleService(conn);
   }
 
-  public void actionList() throws ServletException, IOException {
+  @Override
+  public void performAction(Rq rq) {
+    switch (rq.getActionMethodName()) {
+      case "list":
+        actionList(rq);
+        break;
+    }
+  }
+
+
+  public void actionList(Rq rq){
     //로직------------------------------------------------------
 
     int page = 1;
@@ -36,9 +45,9 @@ public class ArticleController {
     req.setAttribute("articles", articles);
     req.setAttribute("page", page);
     req.setAttribute("totalPage", totalPage);
-    req.getRequestDispatcher("/jsp/article/list.jsp").forward(req, resp);
+    rq.jsp("/article/list");
 
-    resp.getWriter().append(articles.toString());
+    rq.appendBody(articles.toString());
 
 //------------------------------------------------------
   }

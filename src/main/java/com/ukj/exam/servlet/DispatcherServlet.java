@@ -3,6 +3,7 @@ package com.ukj.exam.servlet;
 import com.ukj.exam.Config;
 import com.ukj.exam.Rq;
 import com.ukj.exam.controller.ArticleController;
+import com.ukj.exam.controller.Controller;
 import com.ukj.exam.exception.SQLErrorException;
 import com.ukj.exam.util.DBUtil;
 import com.ukj.exam.util.SecSql;
@@ -67,13 +68,14 @@ public class DispatcherServlet extends HttpServlet {
       req.setAttribute("loggedMemberId", loggedMemberId);
       req.setAttribute("loggedMemberRow", loggedMemberRow);
 
-      if (rq.getControllerName().equals("article")) {
-        ArticleController articleController = new ArticleController(req, resp, conn);
-
-        if (rq.getActionMethodName().equals("list")) {
-          articleController.actionList();
-        }
-
+      switch (rq.getControllerTypeName()) {
+        case "usr":
+          ArticleController articleController = new ArticleController(req, resp, conn);
+          switch (rq.getControllerName()) {
+            case "article":
+              articleController.performAction(rq);
+              break;
+          }
       }
 
 
