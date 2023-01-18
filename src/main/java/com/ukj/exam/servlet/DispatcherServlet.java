@@ -1,6 +1,7 @@
 package com.ukj.exam.servlet;
 
 import com.ukj.exam.Config;
+import com.ukj.exam.Rq;
 import com.ukj.exam.controller.ArticleController;
 import com.ukj.exam.exception.SQLErrorException;
 import com.ukj.exam.util.DBUtil;
@@ -23,22 +24,11 @@ public class DispatcherServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-    req.setCharacterEncoding("UTF-8");
-    resp.setCharacterEncoding("UTF-8");
-    resp.setContentType("text/html; charset-utf-8");
+    Rq rq = new Rq(req, resp);
 
-    String requestUri = req.getRequestURI();
-
-    // localhost:8081/s/article/list
-    String[] requestUriBits = requestUri.split("/");
-
-    if (requestUriBits.length < 4) {
-      resp.getWriter().append("올바른 요청이 아닙니다.");
-      return;
+    if(rq.getIsInvalid()) {
+      rq.appendBody("올바른 요청이 아닙니다.");
     }
-
-    String controlName = requestUriBits[2];
-    String actionMethod = requestUriBits[3];
 
     String driverName = Config.getDriverClassName();
     Connection conn = null;
@@ -47,7 +37,7 @@ public class DispatcherServlet extends HttpServlet {
       Class.forName(driverName);
     } catch (ClassNotFoundException e) {
       System.out.printf("[ClassNotFoundException 예외, %s]", e.getMessage());
-      resp.getWriter().append("DB 드라이버 클래스 로딩 실패");
+      rq.appendBody("DB 드라이버 클래스 로딩 실패");
       return;
 
     }
@@ -77,10 +67,10 @@ public class DispatcherServlet extends HttpServlet {
       req.setAttribute("loggedMemberId", loggedMemberId);
       req.setAttribute("loggedMemberRow", loggedMemberRow);
 
-      if (controlName.equals("article")) {
+      if (rq.getControllerName().equals("article")) {
         ArticleController articleController = new ArticleController(req, resp, conn);
 
-        if (actionMethod.equals("list")) {
+        if (rq.getActionMethodName().equals("list")) {
           articleController.actionList();
         }
 
