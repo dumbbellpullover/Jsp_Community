@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public class ArticleController extends Controller{
   private HttpServletRequest req;
@@ -36,6 +37,10 @@ public class ArticleController extends Controller{
         actionList(rq);
         break;
 
+      case "detail":
+        actionDetailList(rq);
+        break;
+
       case "write":
         actionShowWrite(rq);
         break;
@@ -50,6 +55,23 @@ public class ArticleController extends Controller{
 
   }
 
+  private void actionDetailList(Rq rq) {
+
+    int id = rq.getIntParam("id", 0);
+
+    if (id == 0) {
+      rq.historyBack("id를 입력해주세요.");
+      return;
+    }
+
+    Article article = articleService.getForPrintArticleById(id);
+
+    rq.setAttr("article", article);
+    rq.jsp("/article/detail");
+
+    rq.print(article.toString());
+  }
+
   public void actionList(Rq rq){
     //로직------------------------------------------------------
 
@@ -61,9 +83,9 @@ public class ArticleController extends Controller{
     int totalPage = articleService.getForPrintListTotalPage();
     List<Article> articles = articleService.getForPrintArticles(page);
 
-    req.setAttribute("articles", articles);
-    req.setAttribute("page", page);
-    req.setAttribute("totalPage", totalPage);
+    rq.setAttr("articles", articles);
+    rq.setAttr("page", page);
+    rq.setAttr("totalPage", totalPage);
     rq.jsp("/article/list");
 
     rq.print(articles.toString());

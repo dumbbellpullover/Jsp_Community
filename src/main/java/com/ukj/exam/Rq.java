@@ -1,5 +1,6 @@
 package com.ukj.exam;
 
+import com.ukj.exam.dto.Article;
 import com.ukj.exam.util.Util;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public class Rq {
   private final HttpServletRequest req;
@@ -131,6 +133,10 @@ public class Rq {
     }
   }
 
+  public void setAttr(String attrName, Object attrValue) {
+    req.setAttribute(attrName, attrValue);
+  }
+
   public void historyBack(String msg) {
     println("<script>");
     printf("alert('%s');\n", msg);
@@ -144,4 +150,5 @@ public class Rq {
     printf("location.replace('%s');\n", redirectUri);
     println("</script>");
   }
+
 }

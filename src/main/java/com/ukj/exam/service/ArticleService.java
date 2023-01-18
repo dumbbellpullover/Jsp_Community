@@ -3,10 +3,13 @@ package com.ukj.exam.service;
 import com.ukj.exam.dao.ArticleDao;
 import com.ukj.exam.dto.Article;
 import com.ukj.exam.dto.ResultData;
+import com.ukj.exam.util.DBUtil;
+import com.ukj.exam.util.SecSql;
 import com.ukj.exam.util.Util;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 public class ArticleService {
   private ArticleDao articleDao;
@@ -38,5 +41,9 @@ public class ArticleService {
     int id = articleDao.write(title, body, loggedMemberId);
 
     return ResultData.from("S-1", Util.f("%d번 게시물이 생성되었습니다.", id), "id", id);
+  }
+
+  public Article getForPrintArticleById(int id) {
+    return articleDao.getForPrintArticleById(id);
   }
 }
