@@ -13,6 +13,7 @@
 </head>
 <body>
   <h1>게시물 상세 페이지</h1>
+  <%@ include file="../part/topBar.jspf"%>
     <table>
       <div>번호: <%= (int) articleRow.get("id")%></div>
       <div>작성 날짜: <%= (String) articleRow.get("regDate")%></div>

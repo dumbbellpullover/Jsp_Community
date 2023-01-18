@@ -13,6 +13,7 @@
 </head>
 <body>
   <h1>게시물 수정</h1>
+  <%@ include file="../part/topBar.jspf"%>
 
     <form action="doModify" method ="POST">
 
