@@ -1,6 +1,7 @@
 package com.ukj.exam.servlet;
 
 import com.ukj.exam.Config;
+import com.ukj.exam.controller.ArticleController;
 import com.ukj.exam.exception.SQLErrorException;
 import com.ukj.exam.util.DBUtil;
 import com.ukj.exam.util.SecSql;
@@ -15,16 +16,32 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 
-@WebServlet("/article/list")
-public class ArticleListServlet extends HttpServlet {
+@WebServlet("/s/*")
+public class DispatcherServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-    Connection conn = null;
+    req.setCharacterEncoding("UTF-8");
+    resp.setCharacterEncoding("UTF-8");
+    resp.setContentType("text/html; charset-utf-8");
+
+    String requestUri = req.getRequestURI();
+
+    // localhost:8081/s/article/list
+    String[] requestUriBits = requestUri.split("/");
+
+    if (requestUriBits.length < 4) {
+      resp.getWriter().append("올바른 요청이 아닙니다.");
+      return;
+    }
+
+    String controlName = requestUriBits[2];
+    String actionMethod = requestUriBits[3];
+
     String driverName = Config.getDriverClassName();
+    Connection conn = null;
 
     try {
       Class.forName(driverName);
@@ -35,10 +52,14 @@ public class ArticleListServlet extends HttpServlet {
 
     }
 
+
     try {
       conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBId(), Config.getDBPw());
 
+// 모든 요청 들어가기 전 해야 하는 일------------------------------------------------------
+
       HttpSession session = req.getSession();
+
       boolean isLogged = false;
       int loggedMemberId = -1;
       Map<String, Object> loggedMemberRow = null;
@@ -56,41 +77,19 @@ public class ArticleListServlet extends HttpServlet {
       req.setAttribute("loggedMemberId", loggedMemberId);
       req.setAttribute("loggedMemberRow", loggedMemberRow);
 
-//------------------------------------------------------
+      if (controlName.equals("article")) {
+        ArticleController articleController = new ArticleController(req, resp, conn);
 
-      int page = 1;
-      if (req.getParameter("page") != null && req.getParameter("page").length() != 0) {
-          page = Integer.parseInt(req.getParameter("page"));
+        if (actionMethod.equals("list")) {
+          articleController.actionList();
+        }
+
       }
 
-      int itemInAPage = 20;
-      int limitFrom = (page - 1) * itemInAPage;
-
-      SecSql sql = SecSql.from("SELECT COUNT(*)");
-      sql.append("FROM article");
-
-      int totalPage = (int) Math.ceil( (double) DBUtil.selectRowIntValue(conn, sql) / itemInAPage);
-
-      sql = SecSql.from("SELECT *");
-      sql.append("FROM article");
-      sql.append("ORDER BY id DESC");
-      sql.append("LIMIT ?, ?", limitFrom, itemInAPage);
-
-      List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
-
-      req.setAttribute("articleRows", articleRows);
-      req.setAttribute("page", page);
-      req.setAttribute("totalPage", totalPage);
-      req.getRequestDispatcher("../article/list.jsp").forward(req, resp);
-
-      resp.getWriter().append(articleRows.toString());
-
-//------------------------------------------------------
 
     } catch (SQLException e) {
       System.out.printf("[ClassNotFoundException 예외, %s]", e.getMessage());
       resp.getWriter().append("DB 드라이버 클래스 로딩 실패");
-      e.printStackTrace();
       return;
 
     } catch (SQLErrorException e) {

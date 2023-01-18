@@ -63,7 +63,7 @@ public class HomeMainServlet extends HttpServlet {
       req.setAttribute("loggedMemberId", loggedMemberId);
       req.setAttribute("loggedMemberRow", loggedMemberRow);
 
-      req.getRequestDispatcher("../home/main.jsp").forward(req, resp);
+      req.getRequestDispatcher("/jsp/home/main.jsp").forward(req, resp);
 
     } catch (SQLException e) {
       System.out.printf("[ClassNotFoundException 예외, %s]", e.getMessage());

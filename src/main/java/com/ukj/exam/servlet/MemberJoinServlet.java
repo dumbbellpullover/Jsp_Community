@@ -12,7 +12,7 @@ import java.io.IOException;
 public class MemberJoinServlet extends HttpServlet{
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    req.getRequestDispatcher("../member/join.jsp").forward(req, resp);
+    req.getRequestDispatcher("/jsp/member/join.jsp").forward(req, resp);
   }
 
   @Override
