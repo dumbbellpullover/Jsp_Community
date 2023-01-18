@@ -9,7 +9,7 @@
   <h1>메인 페이지</h1>
   <%@ include file="../part/topBar.jspf"%>
   <div>
-    <a href="../article/list">게시물 리스트</a>
+    <a href="/usr/article/list">게시물 리스트</a>
   </div>
 </body>
 </html>

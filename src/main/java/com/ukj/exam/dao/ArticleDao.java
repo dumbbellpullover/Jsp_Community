@@ -37,4 +37,17 @@ public class ArticleDao {
 
     return articles;
   }
+
+  public int write(String title, String body, int loggedMemberId) {
+
+    SecSql sql = SecSql.from("INSERT INTO article");
+    sql.append("(regDate, updateDate, memberId, title, body)");
+    sql.append("VALUES");
+    sql.append("(NOW(), NOW(), ?, ?, ?)", loggedMemberId, title, body);
+
+    //CONCAT('title__', RAND())
+
+    int id = DBUtil.insert(conn, sql);
+    return id;
+  }
 }

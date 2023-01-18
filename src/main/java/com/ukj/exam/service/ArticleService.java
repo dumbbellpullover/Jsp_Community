@@ -2,6 +2,8 @@ package com.ukj.exam.service;
 
 import com.ukj.exam.dao.ArticleDao;
 import com.ukj.exam.dto.Article;
+import com.ukj.exam.dto.ResultData;
+import com.ukj.exam.util.Util;
 
 import java.sql.Connection;
 import java.util.List;
@@ -30,5 +32,11 @@ public class ArticleService {
 
     List<Article> articles = articleDao.getArticles(itemInAPage, limitFrom);
     return articles;
+  }
+
+  public ResultData write(String title, String body, int loggedMemberId) {
+    int id = articleDao.write(title, body, loggedMemberId);
+
+    return ResultData.from("S-1", Util.f("%d번 게시물이 생성되었습니다.", id), "id", id);
   }
 }

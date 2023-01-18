@@ -1,5 +1,6 @@
 package com.ukj.exam;
 
+import com.ukj.exam.util.Util;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,7 +41,7 @@ public class Rq {
 
     if (requestUriBits.length < minBitsCount) {
       isInvalid = true;
-      appendBody("올바른 요청이 아닙니다.");
+      print("올바른 요청이 아닙니다.");
       return;
     }
 
@@ -85,13 +86,21 @@ public class Rq {
 
   }
 
-  public void appendBody(String str) {
+  public void print(String str) {
     try {
       resp.getWriter().append(str);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
 
+  }
+
+  public void println(String str) {
+    print(str + "\n");
+  }
+
+  public void printf(String format, Object... args) {
+    print(Util.f(format, args));
   }
 
   public void jsp (String jspPath) {
@@ -104,5 +113,12 @@ public class Rq {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public void historyBack(String msg) {
+    println("<script>");
+    printf("alert(%);\n", msg);
+    println("history.back();");
+    println("</script>");
   }
 }
