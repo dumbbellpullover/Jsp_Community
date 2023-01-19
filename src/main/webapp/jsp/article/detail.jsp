@@ -11,6 +11,7 @@
   <div>번호: ${article.id}</div>
   <div>작성 날짜: ${article.regDate}</div>
   <div>최근 수정 날짜: ${article.updateDate}</div>
+  <div>작성자: ${article.name}</div>
   <div>제목: ${article.title}</div>
   <div>내용: ${article.body}</div>
   <div>

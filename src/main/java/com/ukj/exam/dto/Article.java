@@ -10,6 +10,8 @@ public class Article {
   public String regDate;
   public String updateDate;
   public int memberId;
+
+  public String name;
   public String title;
   public String body;
 
@@ -19,6 +21,7 @@ public class Article {
     this.regDate = (String) row.get("regDate");
     this.updateDate = (String) row.get("updateDate");
     this.memberId = (int) row.get("memberId");
+    this.name = (String) row.get("name");
     this.title = (String) row.get("title");
     this.body = (String) row.get("body");
   }

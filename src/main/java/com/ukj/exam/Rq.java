@@ -123,6 +123,9 @@ public class Rq {
   public void setAttr(String attrName, Object attrValue) {
     req.setAttribute(attrName, attrValue);
   }
+  public Object getAttr(String attrName) {
+    return req.getAttribute(attrName);
+  }
 
   public void historyBack(String msg) {
     println("<script>");

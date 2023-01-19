@@ -49,3 +49,9 @@ SELECT * FROM article ORDER BY id DESC LIMIT 1;
 
 select * from article LIMIT 20, 20;
 select count(*) from article;
+
+# 번호 대신 이름으로 게시물 요청
+SELECT A.*, M.name
+FROM article AS A
+JOIN member AS M
+ON A.memberId = M.id;

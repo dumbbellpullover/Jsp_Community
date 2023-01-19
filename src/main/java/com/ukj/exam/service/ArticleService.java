@@ -33,7 +33,7 @@ public class ArticleService {
     int itemInAPage = getItemsInAPage();
     int limitFrom = (page - 1) * itemInAPage;
 
-    List<Article> articles = articleDao.getArticles(itemInAPage, limitFrom);
+    List<Article> articles = articleDao.getArticlesWithName(itemInAPage, limitFrom);
     return articles;
   }
 
@@ -44,7 +44,7 @@ public class ArticleService {
   }
 
   public Article getForPrintArticleById(int id) {
-    return articleDao.getForPrintArticleById(id);
+    return articleDao.getForPrintArticleByIdWithName(id);
   }
 
   public ResultData delete(int id) {

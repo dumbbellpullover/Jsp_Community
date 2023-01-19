@@ -20,6 +20,7 @@
   <thead>
   <tr>
     <td><b>번호</b></td>
+    <td><b>작성자</b></td>
     <td><b>작성 날짜</b></td>
     <td><b>수정 날짜</b></td>
     <td><b>제목</b></td>
@@ -30,6 +31,7 @@
   <c:forEach items="${articles}" var="article">
     <tr>
       <td>${article.id}</td>
+      <td>${article.name}</td>
       <td>${article.regDate}</td>
       <td>${article.updateDate}</td>
       <td><a href="detail?id=${article.id}">${article.title}</a></td>

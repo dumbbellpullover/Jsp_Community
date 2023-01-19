@@ -38,6 +38,24 @@ public class ArticleDao {
     return articles;
   }
 
+  public List<Article> getArticlesWithName(int itemInAPage, int limitFrom) {
+    SecSql sql = SecSql.from("SELECT A.*, M.name");
+    sql.append("FROM article AS A");
+    sql.append("JOIN member AS M");
+    sql.append("ON A.memberId = M.id");
+    sql.append("ORDER BY id DESC");
+    sql.append("LIMIT ?, ?", limitFrom, itemInAPage);
+
+    List<Article> articles = new ArrayList<>();
+    List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
+
+    for (Map<String, Object> articleRow : articleRows) {
+      articles.add(new Article(articleRow));
+    }
+
+    return articles;
+  }
+
   public int write(String title, String body, int loggedMemberId) {
 
     SecSql sql = SecSql.from("INSERT INTO article");
@@ -55,6 +73,17 @@ public class ArticleDao {
 
     SecSql sql = SecSql.from("SELECT *");
     sql.append("FROM article WHERE id = ?", id);
+
+    return new Article(DBUtil.selectRow(conn, sql));
+  }
+
+  public Article getForPrintArticleByIdWithName(int id) {
+    SecSql sql = SecSql.from("SELECT A.*, M.name");
+    sql.append("FROM article AS A");
+    sql.append("JOIN member AS M");
+    sql.append("ON A.memberId = M.id");
+    sql.append("WHERE A.id = ?", id);
+    sql.append("ORDER BY id DESC");
 
     return new Article(DBUtil.selectRow(conn, sql));
   }
