@@ -181,8 +181,8 @@ public class ArticleController extends Controller {
       return;
     }
 
-    String title = req.getParameter("title");
-    String body = req.getParameter("body");
+    String title = rq.getParam("title", "");
+    String body = rq.getParam("body", "");
 
     String redirectUri = rq.getParam("redirectUri", "../article/list");
 

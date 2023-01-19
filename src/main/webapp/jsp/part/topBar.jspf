@@ -13,11 +13,11 @@
   <c:if test="${isLogged}">
     <%--Map으로 가져오기 때문에 키로접근하는 [""]을 써야함--%>
     <span>${loggedMemberRow["name"]}님 환영합니다.</span>
-    <a href="../member/doLogout">로그아웃</a>
+    <a href="/usr/member/doLogout">로그아웃</a>
   </c:if>
 
   <c:if test="${!isLogged}">
-    <a href="../member/login">로그인</a>
-    <a href="../member/join">회원 가입</a>
+    <a href="/usr/member/login">로그인</a>
+    <a href="/usr/member/join">회원 가입</a>
   </c:if>
 </div>

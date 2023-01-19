@@ -65,7 +65,7 @@
   <div>
     <button type="submit">가입</button>
     <button type="button"> <%-- type="button" 을 하지 않으면 취소 버튼이 form으로 발송됨--%>
-      <a href="../home/main">취소</a>
+      <a href="/home/main">취소</a>
     </button>
   </div>
 </form>

@@ -8,7 +8,7 @@
 <%@ include file="../part/topBar.jspf"%>
 
 <div>
-  <a href="../home/main">홈으로 이동</a>
+  <a href="/home/main">홈으로 이동</a>
   <a href="../article/write">게시물 작성</a>
 </div>
 <table border="1">

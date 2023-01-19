@@ -4,6 +4,7 @@ import com.ukj.exam.Config;
 import com.ukj.exam.Rq;
 import com.ukj.exam.controller.ArticleController;
 import com.ukj.exam.controller.Controller;
+import com.ukj.exam.controller.MemberController;
 import com.ukj.exam.exception.SQLErrorException;
 import com.ukj.exam.util.DBUtil;
 import com.ukj.exam.util.SecSql;
@@ -71,10 +72,13 @@ public class DispatcherServlet extends HttpServlet {
       switch (rq.getControllerTypeName()) {
         case "usr":
           ArticleController articleController = new ArticleController(req, resp, conn);
+          MemberController memberController = new MemberController(req, resp, conn);
           switch (rq.getControllerName()) {
             case "article":
               articleController.performAction(rq);
               break;
+            case "member":
+              memberController.performAction(rq);
           }
       }
 
